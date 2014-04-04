@@ -1,0 +1,21 @@
+<VirtualHost <%= node['ceph']['restapi']['addr'] %> >
+<% if node['ceph']['restapi']['name'] -%>
+  ServerName <%= node['ceph']['restapi']['name'] %>
+<% end -%>
+  ServerAdmin <%= node['ceph']['restapi']['admin_email'] %>
+  DocumentRoot /var/www/
+
+  WSGIDaemonProcess cephrest user=<%=node['apache']['user']%> group=<%=node['apache']['group']%> processes=1 threads=5
+  WSGIScriptAlias / /usr/lib/ceph/restapi.wsgi
+
+  <Location />
+    WSGIProcessGroup cephrest
+    WSGIApplicationGroup %{GLOBAL}
+    Order deny,allow
+    Allow from all
+  </Location>
+
+  ErrorLog /var/log/<%= node['apache']['package'] %>/error.log
+  CustomLog /var/log/<%= node['apache']['package'] %>/ceph-rest-access.log proxy_combined
+  ServerSignature Off
+</VirtualHost>
