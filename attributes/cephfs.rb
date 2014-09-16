@@ -6,10 +6,11 @@ when 'debian'
   packages += debug_packages(packages) if node['ceph']['install_debug']
   default['ceph']['cephfs']['packages'] = packages
 when 'rhel'
-  packages = []
+  packages = ['ceph-fuse']
   if node['platform'] == 'redhat' && node['platform_version'].to_i >= 7 && node['ceph']['version'] > 'firefly'
     packages << 'kmod-ceph'
   end
+  default['ceph']['cephfs']['packages'] = packages
 else
-  default['ceph']['cephfs']['packages'] = []
+  default['ceph']['cephfs']['packages'] = ['ceph-fuse']
 end
