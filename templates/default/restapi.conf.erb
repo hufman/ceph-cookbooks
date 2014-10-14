@@ -11,8 +11,12 @@
   <Location />
     WSGIProcessGroup cephrest
     WSGIApplicationGroup %{GLOBAL}
-    Order deny,allow
+    <%- if node[:apache][:version].to_f < 2.4 %>
+    Order allow,deny
     Allow from all
+    <%- else %>
+    Require all granted
+    <%- end %>
   </Location>
 
   ErrorLog /var/log/<%= node['apache']['package'] %>/error.log
