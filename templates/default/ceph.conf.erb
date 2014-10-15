@@ -51,7 +51,7 @@
 [<%= name %>]
   host = <%= node['hostname'] %>
   log file = /var/log/ceph/radosgw-<%= instance['rgw zone'] %>.log
-<%- instance.sort.each do |k,v| %>
+<%- instance.sort.reject{ |k,v| (! k.is_a? String) || (! v.is_a? String) }.each do |k,v| %>
   <%= k %> = <%= v %>
 <%- end %>
 <%- end # radosgw.instances.each -%>

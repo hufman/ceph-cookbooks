@@ -38,7 +38,8 @@ action :add do
   instance['keyring'] = "/etc/ceph/ceph.#{keyname}.keyring"
   instance['rgw socket path'] = @new_resource.socket_path || "/var/run/ceph-radosgw/radosgw.#{zone}.#{node['hostname']}"
   instance['rgw dns name'] = @new_resource.dns_name
-  instance['rgw print continue'] = @new_resource.print_continue unless @new_resource.print_continue.nil?
+  instance['api_aliases'] = @new_resource.dns_aliases if @new_resource.dns_aliases
+  instance['rgw print continue'] = @new_resource.print_continue.to_s unless @new_resource.print_continue.nil?
 
   node.default['ceph']['radosgw']['instances'][keyname] = instance
 
