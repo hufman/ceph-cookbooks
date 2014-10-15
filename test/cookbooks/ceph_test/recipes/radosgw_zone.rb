@@ -24,6 +24,6 @@ ceph_radosgw 'us-test' do
   zone_root_pool '.rgw.root'
   dns_name 'ceph.test'
   keyname 'client.radosgw.us-test'
-  socket_path '/var/run/ceph/radosgw.us-test'
+  socket_path '/var/run/ceph-radosgw/radosgw.us-test'
   print_continue true
 end.run_action(:add)

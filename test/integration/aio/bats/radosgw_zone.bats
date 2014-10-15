@@ -7,7 +7,7 @@
   echo "$settings" | grep 'rgw zone = default' > /dev/null
   echo "$settings" | grep 'rgw zone root pool = .rgw.root' > /dev/null
   echo "$settings" | grep 'keyring = /etc/ceph/ceph.client.radosgw.us-test.keyring' > /dev/null
-  echo "$settings" | grep 'rgw socket path = /var/run/ceph/radosgw.us-test' > /dev/null
+  echo "$settings" | grep 'rgw socket path = /var/run/ceph-radosgw/radosgw.us-test' > /dev/null
   echo "$settings" | grep 'rgw dns name = ceph.test' > /dev/null
   echo "$settings" | grep 'rgw print continue = true' > /dev/null
 }
@@ -20,6 +20,17 @@
 }
 @test "radosgw for test zone is running" {
   ps -ef | grep 'radosg[w].*radosgw.us-test' > /dev/null
-  test -e /var/run/ceph/radosgw.us-test
+  test -e /var/run/ceph-radosgw/radosgw.us-test
 }
 
+@test "radosgw for test zone has apache config" {
+  filename=/etc/apache2/sites-enabled/rgw-default.conf
+  test -e $filename
+  grep 'FastCgiExternalServer /var/www/s3gw-default.fcgi -socket /var/run/ceph-radosgw/radosgw.us-test' $filename > /dev/null
+  grep 'ServerName ceph.test' $filename > /dev/null
+  grep 'RewriteRule.*s3gw-default.fcgi' $filename > /dev/null
+}
+
+@test "radosgw for test zone responds via apache" {
+  wget http://localhost --header=host:ceph.test -O- | grep ListAllMyBucketsResult > /dev/null
+}

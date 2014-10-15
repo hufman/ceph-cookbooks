@@ -12,7 +12,7 @@ attribute :zone_root_pool, :kind_of => String, :default => nil  # defaults to .#
 # other radosgw settings
 attribute :keyname, :kind_of => String, :default => nil  # defaults to client.radosgw.#{zone}.#{hostname}, used to generate key
 attribute :dns_name, :kind_of => String
-attribute :socket_path, :kind_of => String, :default => nil # defaults to /var/run/ceph/ceph-radosgw.#{zone}.#{hostname}
+attribute :socket_path, :kind_of => String, :default => nil # defaults to /var/run/ceph-radosgw/ceph-radosgw.#{zone}.#{hostname}
 attribute :print_continue, :kind_of => [TrueClass, FalseClass], :default => nil
 
 def initialize(*args)

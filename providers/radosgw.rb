@@ -36,7 +36,7 @@ action :add do
   instance['rgw zone root pool'] = @new_resource.zone_root_pool || ".#{@new_resource.zone}.rgw.root"
   keyname = @new_resource.keyname || "client.radosgw.#{zone}.#{node['hostname']}"
   instance['keyring'] = "/etc/ceph/ceph.#{keyname}.keyring"
-  instance['rgw socket path'] = @new_resource.socket_path || "/var/run/ceph/radosgw.#{zone}.#{node['hostname']}"
+  instance['rgw socket path'] = @new_resource.socket_path || "/var/run/ceph-radosgw/radosgw.#{zone}.#{node['hostname']}"
   instance['rgw dns name'] = @new_resource.dns_name
   instance['rgw print continue'] = @new_resource.print_continue unless @new_resource.print_continue.nil?
 
